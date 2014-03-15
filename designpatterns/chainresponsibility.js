@@ -10,13 +10,30 @@
 function ChainResponsibility() {
 
 	var me = this;
+	
+	/**
+	 * Start node
+	 */
 	this.start;
+	
+	/**
+	 * End node
+	 */
 	this.end;
+	
+	/**
+	 * The current node which is holding the task to execute.
+	 */
 	this.currentNode = null;
 
-	// This state tells the chain if it can move to the next node.
+	/**
+	 * This state tells the chain if it can move to the next node.
+	 */
 	this.canGoToNext = false;
-
+	
+	/**
+	 * Add a new node.
+	 */
 	this.add = function(id, callBack) {
 
 		if (this.start == null) {
@@ -29,10 +46,17 @@ function ChainResponsibility() {
 		}
 	};
 
+	/**
+	 * Tell the object that the node has finished it's task.
+	 */
 	this.hasEndTask = function() {
+		
 		me.canGoToNext = true;
 	};
 
+	/**
+	 * Determine if we can go to the next state.
+	 */
 	this.checkGoToNextState = function() {
 			
 		if (me.canGoToNext) {
@@ -44,7 +68,12 @@ function ChainResponsibility() {
 			setTimeout(me.checkGoToNextState, 1000);
 		}
 	};
-
+	
+	/**
+	 * Create a new node. 
+	 * The node has an id, a callback function and the next node.
+	 * 
+	 */
 	this.createNode = function(id, callBack) {
 
 		var nodeObj = new function() {
@@ -75,7 +104,10 @@ function ChainResponsibility() {
 		};
 		return nodeObj;
 	};
-
+	
+	/**
+	 * Get a node at a specific index no.
+	 */
 	this.getNodeAtIndex = function(i) {
 
 		var counter = 0;
@@ -90,7 +122,10 @@ function ChainResponsibility() {
 		}
 		return null;
 	};
-
+	
+	/**
+	 * Remove the node from the list with a specified ID.
+	 */
 	this.remove = function(id) {
 
 		var curNode = this.start;
@@ -119,7 +154,10 @@ function ChainResponsibility() {
 			}
 		}
 	};
-
+	
+	/**
+	 * Loop through the list.
+	 */
 	this.each = function(cb) {
 
 		var currNode = this.start;
@@ -129,14 +167,20 @@ function ChainResponsibility() {
 			currNode = currNode.next;
 		}
 	};
-
+	
+	/**
+	 * Tells the list that executing the callback  has finished.
+	 */
 	this.doneCallback = function() {
 
 		if (this.currentNode != null) {
 			this.currentNode.applyCallBack();
 		}
 	};
-
+	
+	/**
+	 * Start to executing the chain of tasks.
+	 */
 	this.run = function() {
 
 		if (this.currentNode == null) {

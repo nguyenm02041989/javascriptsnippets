@@ -10,14 +10,25 @@
 function Publisher() {
 
 	var me = this;
-
+	
+	/**
+	 * The subscribers of a publisher.
+	 */
 	this.subscribers = [];
 
+	/**
+	 * Add a new subscriber to list of subscribers.
+	 */
 	this.subscribe = function(subscriber) {
-
-		this.subscribers.push(subscriber);
+		
+		if(!this.exists(subscriber)) {
+			this.subscribers.push(subscriber);
+		}
 	};
 
+	/**
+	 * Unsubscribe the subscriber from the list.
+	 */
 	this.unsubscribe = function(subscriber) {
 
 		var max = this.subscribers.length;
@@ -36,7 +47,36 @@ function Publisher() {
 			this.subscribers.splice(indexToRm, 1);
 		}
 	};
-
+	
+	/**
+	 * Check if the subscriber exists.
+	 */
+	this.exists = function(subscriber) {
+		
+		var max = this.subscribers.length;
+		for ( var i = 0; i < max; i++) {
+			
+			if (this.subscribers[i] === subscriber) {
+				return true;
+			}
+		}
+		return false;
+	};
+	
+	/**
+	 * Notify the subscribers. 
+	 * 
+	 * Usage:
+	 * 
+	 * Publishher.notify('notify', 'click',);
+	 * 
+	 * OR 
+	 * 
+	 * Publishher.notify('notify', 'click', 'some more arguments');
+	 * 
+	 * It's very powerful.
+	 * 
+	 */
 	this.notify = function(methodName) {
 		
 		var max = this.subscribers.length;
@@ -49,6 +89,10 @@ function Publisher() {
 		}
 	};
 
+	/**
+	 * Loop through the subscribers.
+	 * 
+	 */
 	this.each = function(cb) {
 
 		var max = this.subscribers.length;
@@ -59,6 +103,7 @@ function Publisher() {
 	};
 
 };
+
 
 function Subscriber(subscriptionId) {
 
